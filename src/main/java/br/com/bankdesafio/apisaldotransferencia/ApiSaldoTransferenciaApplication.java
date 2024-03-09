@@ -1,4 +1,4 @@
-package br.com.bank.apisaldotransferencia;
+package br.com.bankdesafio.apisaldotransferencia;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
