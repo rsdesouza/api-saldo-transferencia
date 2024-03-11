@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sqs,lambda
+      - DEFAULT_REGION=us-east-1
+      - EDGE_PORT=4566
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+
+  mockserver:
+    image: mockserver/mockserver
+    ports:
+      - "1080:1080"
+    environment:
+      - MOCKSERVER_LOG_LEVEL=INFO
+
+  aurora:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=bankdesafio
+      - MYSQL_USER=admin
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_PASSWORD=secret
+    command: --default-authentication-plugin=mysql_native_password
+
+  bankdesafio:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - aurora
+      - localstack
+      - mockserver
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://aurora:3306/bankdesafio?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=secret
+      - MOCKSERVER_URL=http://mockserver:1080
+      - AWS_S3_ENDPOINT=http://localstack:4566
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      - AWS_REGION=us-east-1

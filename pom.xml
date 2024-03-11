@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.bank-desafio</groupId>
 	<artifactId>api-saldo-transferencia</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>api-saldo-transferencia</name>
 	<description>Solução em Java/Spring que permita que os clientes consigam realizar as operações de Consulta de Saldo e Transferência entre contas.</description>
 	<properties>
