@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-@Repository
 public interface ContaCorrenteRepository extends JpaRepository<ContaCorrente, String> {
 
     @Query("SELECT CASE WHEN COUNT(c) > 0 THEN true ELSE false END FROM ContaCorrente c WHERE c.id = ?1 AND c.ativa = true")

@@ -1,6 +1,7 @@
 package br.com.bankdesafio.apisaldotransferencia.service.validation;
 
 import br.com.bankdesafio.apisaldotransferencia.dto.TransferenciaDTO;
+import br.com.bankdesafio.apisaldotransferencia.exception.ContaInativaException;
 import br.com.bankdesafio.apisaldotransferencia.model.ContaCorrente;
 import br.com.bankdesafio.apisaldotransferencia.repository.ContaCorrenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,10 @@ public class TransferenciaValidationService {
 
     private void validarContasAtivas(String idContaOrigem, String idContaDestino) {
         if (!contaCorrenteRepository.existsByIdAndAtivaTrue(idContaOrigem)) {
-            throw new IllegalArgumentException("Conta de origem inativa ou não encontrada.");
+            throw new ContaInativaException("Conta de origem inativa ou não encontrada.");
         }
         if (!contaCorrenteRepository.existsByIdAndAtivaTrue(idContaDestino)) {
-            throw new IllegalArgumentException("Conta de destino inativa ou não encontrada.");
+            throw new ContaInativaException("Conta de destino inativa ou não encontrada.");
         }
     }
 
