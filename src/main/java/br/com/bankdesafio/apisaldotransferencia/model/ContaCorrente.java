@@ -18,13 +18,8 @@ public class ContaCorrente implements Serializable  {
     private static final long serialVersionUID = -7941328091536232738L;
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private UUID id;
-
-    @Column(name = "nome_cliente")
-    private String nomeCliente;
 
     @Column(name = "saldo")
     private BigDecimal saldo;
@@ -34,6 +29,17 @@ public class ContaCorrente implements Serializable  {
 
     @Column(name = "limite_diario", nullable = false)
     private BigDecimal limiteDiario = new BigDecimal("1000");
+
+    @Column(name = "total_transferido_hoje")
+    private BigDecimal totalTransferidoHoje;
+
+    public BigDecimal getTotalTransferidoHoje() {
+        return totalTransferidoHoje;
+    }
+
+    public void setTotalTransferidoHoje(BigDecimal totalTransferidoHoje) {
+        this.totalTransferidoHoje = totalTransferidoHoje;
+    }
 
     public ContaCorrente() {
 
@@ -45,14 +51,6 @@ public class ContaCorrente implements Serializable  {
 
     public void setId(UUID id) {
         this.id = id;
-    }
-
-    public String getNomeCliente() {
-        return nomeCliente;
-    }
-
-    public void setNomeCliente(String nomeCliente) {
-        this.nomeCliente = nomeCliente;
     }
 
     public BigDecimal getSaldo() {

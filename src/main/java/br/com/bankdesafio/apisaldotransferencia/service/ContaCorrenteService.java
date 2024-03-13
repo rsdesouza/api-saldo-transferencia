@@ -1,44 +1,85 @@
 package br.com.bankdesafio.apisaldotransferencia.service;
 
 import br.com.bankdesafio.apisaldotransferencia.dto.SaldoDTO;
-import br.com.bankdesafio.apisaldotransferencia.mapper.SaldoMapper;
+import br.com.bankdesafio.apisaldotransferencia.dto.TransferenciaDTO;
 import br.com.bankdesafio.apisaldotransferencia.model.ContaCorrente;
 import br.com.bankdesafio.apisaldotransferencia.repository.ContaCorrenteRepository;
+import br.com.bankdesafio.apisaldotransferencia.service.validation.ContaCorrenteValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
 public class ContaCorrenteService {
 
-    @Autowired
-    private ContaCorrenteRepository contaCorrenteRepository;
+    private final ContaCorrenteRepository contaCorrenteRepository;
+    private final ContaCorrenteValidationService contaCorrenteValidationService;
 
     @Autowired
-    private SaldoMapper saldoMapper;
+    public ContaCorrenteService(ContaCorrenteRepository contaCorrenteRepository, ContaCorrenteValidationService contaCorrenteValidationService) {
+        this.contaCorrenteRepository = contaCorrenteRepository;
+        this.contaCorrenteValidationService = contaCorrenteValidationService;
+    }
 
     public SaldoDTO consultarSaldo(UUID id) {
-        Optional<ContaCorrente> contaOpt = contaCorrenteRepository.findById(id);
-        if (contaOpt.isEmpty() || !contaOpt.get().getAtiva()) {
-            throw new IllegalArgumentException("Conta corrente não encontrada ou inativa.");
-        }
+        ContaCorrente conta = contaCorrenteValidationService.validarContaAtiva(id);
 
-        ContaCorrente conta = contaOpt.get();
-        return saldoMapper.toDto(conta);
+        SaldoDTO saldo = new SaldoDTO();
+        saldo.setIdConta(conta.getId());
+        saldo.setSaldo(conta.getSaldo());
 
+        return saldo;
     }
 
     @Transactional
     public void desativarConta(UUID id) {
-        Optional<ContaCorrente> conta = contaCorrenteRepository.findById(id);
-        if (conta.isPresent()) {
-            ContaCorrente contaCorrente = conta.get();
-            contaCorrente.setAtiva(false);
-            contaCorrenteRepository.save(contaCorrente);
-        } else {
-            throw new IllegalArgumentException("Conta corrente não encontrada.");
-        }
+        ContaCorrente conta = contaCorrenteValidationService.validarExistenciaConta(id);
+        conta.setAtiva(false);
+        contaCorrenteRepository.save(conta);
     }
+
+    @Transactional
+    public ContaCorrente atualizarSaldo(TransferenciaDTO transferenciaDTO) {
+
+        ContaCorrente contaOrigem = contaCorrenteRepository.findById(transferenciaDTO.getIdContaOrigem())
+                .orElseThrow(() -> new IllegalArgumentException("Conta corrente de origem não encontrada."));
+
+        ContaCorrente contaDestino = contaCorrenteRepository.findById(transferenciaDTO.getIdContaOrigem())
+                .orElseThrow(() -> new IllegalArgumentException("Conta corrente de origem não encontrada."));
+
+        // Atualizar o saldo da conta de origem
+        BigDecimal novoSaldoOrigem = contaOrigem.getSaldo().subtract(transferenciaDTO.getValor());
+        contaOrigem.setSaldo(novoSaldoOrigem);
+
+        // Atualizar o saldo da conta de destino
+        BigDecimal novoSaldoDestino = contaDestino.getSaldo().add(transferenciaDTO.getValor());
+        contaDestino.setSaldo(novoSaldoDestino);
+
+        // Persistir as alterações no banco de dados
+        contaCorrenteRepository.save(contaOrigem);
+        contaCorrenteRepository.save(contaDestino);
+
+        return contaOrigem;
+
+    }
+
+    @Transactional
+    public void atualizarTotalTransferidoHoje(ContaCorrente contaOrigem, BigDecimal valorTransferencia) {
+        BigDecimal totalTransferidoHojeAtualizado = contaOrigem.getTotalTransferidoHoje().add(valorTransferencia);
+
+        // Verificar se o total transferido hoje excede o limite diário
+        if (totalTransferidoHojeAtualizado.compareTo(contaOrigem.getLimiteDiario()) > 0) {
+            throw new IllegalArgumentException("A transferência excede o limite diário permitido para a conta de origem.");
+        }
+
+        // Atualizar o total transferido hoje na conta de origem
+        contaOrigem.setTotalTransferidoHoje(totalTransferidoHojeAtualizado);
+
+        // Salvar a conta com o total transferido hoje atualizado
+        contaCorrenteRepository.save(contaOrigem);
+    }
+
 }

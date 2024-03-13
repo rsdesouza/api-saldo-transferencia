@@ -25,7 +25,7 @@ services:
       - "1080:1080"
     volumes:
       - ./init-mockserver.sh:/init-mockserver.sh
-    command: /bin/sh -c "/init-mockserver.sh && mockserver -serverPort 1080 -logLevel INFO"
+    command: "/init-mockserver.sh"
     networks:
       - bank_network
 
@@ -44,6 +44,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    volumes:
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
       - bank_network
 

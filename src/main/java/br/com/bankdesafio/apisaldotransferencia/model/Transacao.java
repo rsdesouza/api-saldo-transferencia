@@ -20,9 +20,7 @@ public class Transacao implements Serializable {
     private static final long serialVersionUID = -7941328091536232738L;
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
     private UUID id;
 
     @Column(name = "valor")
@@ -35,9 +33,15 @@ public class Transacao implements Serializable {
     @JoinColumn(name = "conta_origem_id", referencedColumnName = "id")
     private ContaCorrente contaOrigem;
 
+    @Column(name = "nome_cliente_origem")
+    private String nomeClienteOrigem;
+
     @ManyToOne
     @JoinColumn(name = "conta_destino_id", referencedColumnName = "id")
     private ContaCorrente contaDestino;
+
+    @Column(name = "nome_cliente_destino")
+    private String nomeClienteDestino;
 
     public Transacao() {
 
@@ -81,5 +85,21 @@ public class Transacao implements Serializable {
 
     public void setContaDestino(ContaCorrente contaDestino) {
         this.contaDestino = contaDestino;
+    }
+
+    public String getNomeClienteOrigem() {
+        return nomeClienteOrigem;
+    }
+
+    public void setNomeClienteOrigem(String nomeClienteOrigem) {
+        this.nomeClienteOrigem = nomeClienteOrigem;
+    }
+
+    public String getNomeClienteDestino() {
+        return nomeClienteDestino;
+    }
+
+    public void setNomeClienteDestino(String nomeClienteDestino) {
+        this.nomeClienteDestino = nomeClienteDestino;
     }
 }
