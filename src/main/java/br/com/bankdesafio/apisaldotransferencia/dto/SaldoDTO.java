@@ -15,20 +15,19 @@ public class SaldoDTO implements Serializable {
     private static final long serialVersionUID = -7941328091536232738L;
 
     @JsonProperty("id_conta")
-    private UUID idConta;
+    private String idConta;
 
     @JsonProperty("saldo")
     private BigDecimal saldo;
 
     public SaldoDTO() {
-
     }
 
-    public UUID getIdConta() {
+    public String getIdConta() {
         return idConta;
     }
 
-    public void setIdConta(UUID idConta) {
+    public void setIdConta(String idConta) {
         this.idConta = idConta;
     }
 

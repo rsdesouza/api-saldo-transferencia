@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Service
 public class TransferenciaValidationService {
@@ -25,7 +24,7 @@ public class TransferenciaValidationService {
         validarLimiteDiarioContaOrigem(transferenciaDTO.getIdContaOrigem(), transferenciaDTO.getValor());
     }
 
-    private void validarContasAtivas(UUID idContaOrigem, UUID idContaDestino) {
+    private void validarContasAtivas(String idContaOrigem, String idContaDestino) {
         if (!contaCorrenteRepository.existsByIdAndAtivaTrue(idContaOrigem)) {
             throw new IllegalArgumentException("Conta de origem inativa ou não encontrada.");
         }
@@ -34,7 +33,7 @@ public class TransferenciaValidationService {
         }
     }
 
-    private void validarSaldoContaOrigem(UUID idContaOrigem, BigDecimal valorTransferencia) {
+    private void validarSaldoContaOrigem(String idContaOrigem, BigDecimal valorTransferencia) {
         ContaCorrente contaOrigem = contaCorrenteRepository.findById(idContaOrigem)
                 .orElseThrow(() -> new IllegalArgumentException("Conta de origem não encontrada."));
 
@@ -43,7 +42,7 @@ public class TransferenciaValidationService {
         }
     }
 
-    private void validarLimiteDiarioContaOrigem(UUID idContaOrigem, BigDecimal valorTransferencia) {
+    private void validarLimiteDiarioContaOrigem(String idContaOrigem, BigDecimal valorTransferencia) {
         ContaCorrente contaOrigem = contaCorrenteRepository.findById(idContaOrigem)
                 .orElseThrow(() -> new IllegalArgumentException("Conta de origem não encontrada."));
 

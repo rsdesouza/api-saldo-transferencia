@@ -14,16 +14,16 @@ public class ClienteResponse implements Serializable {
     private static final long serialVersionUID = -2028879961365308239L;
 
     @JsonProperty("id_conta")
-    private UUID idConta;
+    private String idConta;
 
     @JsonProperty("nome")
     private String nome;
 
-    public UUID getIdConta() {
+    public String getIdConta() {
         return idConta;
     }
 
-    public void setIdConta(UUID idConta) {
+    public void setIdConta(String idConta) {
         this.idConta = idConta;
     }
 
@@ -34,5 +34,4 @@ public class ClienteResponse implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
 }

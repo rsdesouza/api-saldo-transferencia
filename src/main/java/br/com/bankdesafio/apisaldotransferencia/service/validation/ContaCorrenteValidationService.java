@@ -17,13 +17,13 @@ public class ContaCorrenteValidationService {
         this.contaCorrenteRepository = contaCorrenteRepository;
     }
 
-    public ContaCorrente validarContaAtiva(UUID id) {
+    public ContaCorrente validarContaAtiva(String id) {
         return contaCorrenteRepository.findById(id)
                 .filter(ContaCorrente::getAtiva)
                 .orElseThrow(() -> new IllegalArgumentException("Conta corrente não encontrada ou inativa."));
     }
 
-    public ContaCorrente validarExistenciaConta(UUID id) {
+    public ContaCorrente validarExistenciaConta(String id) {
         return contaCorrenteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Conta corrente não encontrada."));
     }

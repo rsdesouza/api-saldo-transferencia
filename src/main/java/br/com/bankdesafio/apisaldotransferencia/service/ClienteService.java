@@ -18,7 +18,7 @@ public class ClienteService {
         this.clienteFeignClient = clienteFeignClient;
     }
 
-    public ClienteResponse getClienteById(UUID idConta) {
+    public ClienteResponse getClienteById(String idConta) {
         return clienteFeignClient.getClienteById(idConta);
     }
 }

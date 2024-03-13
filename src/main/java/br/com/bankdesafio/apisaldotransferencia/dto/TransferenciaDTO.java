@@ -6,7 +6,6 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class TransferenciaDTO implements Serializable {
@@ -15,10 +14,10 @@ public class TransferenciaDTO implements Serializable {
     private static final long serialVersionUID = -9080491016456834683L;
 
     @JsonProperty("id_conta_origem")
-    private UUID idContaOrigem;
+    private String idContaOrigem;
 
     @JsonProperty("id_conta_destino")
-    private UUID idContaDestino;
+    private String idContaDestino;
 
     @JsonProperty("valor")
     private BigDecimal valor;
@@ -27,19 +26,19 @@ public class TransferenciaDTO implements Serializable {
 
     }
 
-    public UUID getIdContaOrigem() {
+    public String getIdContaOrigem() {
         return idContaOrigem;
     }
 
-    public void setIdContaOrigem(UUID idContaOrigem) {
+    public void setIdContaOrigem(String idContaOrigem) {
         this.idContaOrigem = idContaOrigem;
     }
 
-    public UUID getIdContaDestino() {
+    public String getIdContaDestino() {
         return idContaDestino;
     }
 
-    public void setIdContaDestino(UUID idContaDestino) {
+    public void setIdContaDestino(String idContaDestino) {
         this.idContaDestino = idContaDestino;
     }
 

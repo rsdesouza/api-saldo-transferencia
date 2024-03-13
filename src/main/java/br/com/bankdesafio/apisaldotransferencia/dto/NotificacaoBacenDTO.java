@@ -1,15 +1,13 @@
 package br.com.bankdesafio.apisaldotransferencia.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class NotificacaoBacenDTO implements Serializable {
-    public NotificacaoBacenDTO(UUID transacaoId, BigDecimal valor, String contaOrigem, String contaDestino) {
+    public NotificacaoBacenDTO(String transacaoId, BigDecimal valor, String contaOrigem, String contaDestino) {
         this.transacaoId = transacaoId;
         this.valor = valor;
         this.contaOrigem = contaOrigem;
@@ -20,7 +18,7 @@ public class NotificacaoBacenDTO implements Serializable {
     private static final long serialVersionUID = -2028879961365308239L;
 
     @JsonProperty("transacao_id")
-    private UUID transacaoId;
+    private String transacaoId;
 
     @JsonProperty("valor")
     private BigDecimal valor;
@@ -31,11 +29,11 @@ public class NotificacaoBacenDTO implements Serializable {
     @JsonProperty("conta_destino")
     private String contaDestino;
 
-    public UUID getTransacaoId() {
+    public String getTransacaoId() {
         return transacaoId;
     }
 
-    public void setTransacaoId(UUID transacaoId) {
+    public void setTransacaoId(String transacaoId) {
         this.transacaoId = transacaoId;
     }
 
@@ -62,5 +60,4 @@ public class NotificacaoBacenDTO implements Serializable {
     public void setContaDestino(String contaDestino) {
         this.contaDestino = contaDestino;
     }
-
 }

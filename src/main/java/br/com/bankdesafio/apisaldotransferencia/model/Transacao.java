@@ -1,13 +1,11 @@
 package br.com.bankdesafio.apisaldotransferencia.model;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import jakarta.persistence.*;
 
@@ -21,7 +19,7 @@ public class Transacao implements Serializable {
 
     @Id
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "CHAR(36)")
-    private UUID id;
+    private String id;
 
     @Column(name = "valor")
     private BigDecimal valor;
@@ -47,11 +45,11 @@ public class Transacao implements Serializable {
 
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

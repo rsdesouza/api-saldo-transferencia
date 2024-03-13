@@ -24,7 +24,7 @@ public class ContaCorrenteService {
         this.contaCorrenteValidationService = contaCorrenteValidationService;
     }
 
-    public SaldoDTO consultarSaldo(UUID id) {
+    public SaldoDTO consultarSaldo(String id) {
         ContaCorrente conta = contaCorrenteValidationService.validarContaAtiva(id);
 
         SaldoDTO saldo = new SaldoDTO();
@@ -35,7 +35,7 @@ public class ContaCorrenteService {
     }
 
     @Transactional
-    public void desativarConta(UUID id) {
+    public void desativarConta(String id) {
         ContaCorrente conta = contaCorrenteValidationService.validarExistenciaConta(id);
         conta.setAtiva(false);
         contaCorrenteRepository.save(conta);
