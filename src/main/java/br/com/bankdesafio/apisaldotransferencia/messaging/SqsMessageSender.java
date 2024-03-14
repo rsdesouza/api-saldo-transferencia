@@ -13,13 +13,12 @@ public class SqsMessageSender {
     private final AmazonSQS sqsClient;
 
     @Value("${url.sqs.queue}")
-    private final String queueUrl;
+    private String queueUrl;
 
-    public SqsMessageSender(String queueUrl) {
+    public SqsMessageSender() {
         this.sqsClient = AmazonSQSClientBuilder.standard()
                 .withRegion(Regions.DEFAULT_REGION)
                 .build();
-        this.queueUrl = queueUrl;
     }
 
     public void sendMessage(String messageBody) {
