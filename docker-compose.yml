@@ -9,6 +9,11 @@ services:
       - SERVICES=s3,sqs,lambda
       - DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566
+    volumes:
+      - ./init-localstack.sh:/docker-entrypoint-initdb.d/init-localstack.sh
+    entrypoint:
+      - sh
+      - /docker-entrypoint-initdb.d/init-localstack.sh
     networks:
       - bank_network
 
