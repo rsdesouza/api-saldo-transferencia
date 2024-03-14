@@ -1,4 +1,3 @@
--- init-db.sql
 USE bankdesafio;
 
 CREATE TABLE IF NOT EXISTS tbl_conta_corrente (
@@ -10,6 +9,7 @@ CREATE TABLE IF NOT EXISTS tbl_conta_corrente (
   PRIMARY KEY (id)
 );
 
+-- Insere valores de exemplo com IDs UUID
 INSERT INTO tbl_conta_corrente (id, saldo, ativa, limite_diario, total_transferido_hoje) VALUES
 ('7859ee7a-edb5-416b-80c9-f6840007ddce', 1000.00, TRUE, 1000.00, 0.00),
 ('2fd0f2f6-58f3-4c8b-b510-ec20f6447b44', 2000.00, TRUE, 1000.00, 0.00),

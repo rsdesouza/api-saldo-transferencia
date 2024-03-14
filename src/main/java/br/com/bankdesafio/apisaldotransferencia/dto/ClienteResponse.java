@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class ClienteResponse implements Serializable {

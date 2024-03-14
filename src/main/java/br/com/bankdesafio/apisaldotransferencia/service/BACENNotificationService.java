@@ -3,12 +3,15 @@ package br.com.bankdesafio.apisaldotransferencia.service;
 import br.com.bankdesafio.apisaldotransferencia.dto.NotificacaoBacenDTO;
 import br.com.bankdesafio.apisaldotransferencia.rest.BACENFeignClient;
 import feign.FeignException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BACENNotificationService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BACENNotificationService.class);
 
     private final BACENFeignClient bacenFeignClient;
 
@@ -18,22 +21,11 @@ public class BACENNotificationService {
     }
 
     public void notificarBACEN(NotificacaoBacenDTO notificacaoBacenDTO) {
-
-        // Enviar a notificação para o BACEN
         try {
-            ResponseEntity<Void> response = bacenFeignClient.notificarTransacao(notificacaoBacenDTO);
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                // Tratar a resposta não bem-sucedida conforme necessário
-                // Por exemplo, pode-se logar o incidente, tentar novamente, etc.
-                System.err.println("Falha ao notificar o BACEN sobre a transação.");
-            }
+            bacenFeignClient.notificarTransacao(notificacaoBacenDTO);
+            LOGGER.info("Notificação enviada ao BACEN com sucesso.");
         } catch (FeignException e) {
-            // Tratar exceções, por exemplo, limitação de taxa
-            if (e.status() == 429) {
-                System.err.println("Limite de notificações ao BACEN excedido. Tente novamente mais tarde.");
-            } else {
-                System.err.println("Erro ao comunicar com o BACEN: " + e.getMessage());
-            }
+            LOGGER.error("Falha ao notificar o BACEN: {}", e.getMessage(), e);
         }
     }
 }

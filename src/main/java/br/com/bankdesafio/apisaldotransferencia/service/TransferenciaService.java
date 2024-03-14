@@ -50,8 +50,8 @@ public class TransferenciaService {
         NotificacaoBacenDTO notificacaoBacenDTO = new NotificacaoBacenDTO(
                 transacao.getId(),
                 transacao.getValor(),
-                transacao.getContaOrigem().getId().toString(),
-                transacao.getContaDestino().getId().toString()
+                transacao.getContaOrigem().getId(),
+                transacao.getContaDestino().getId()
         );
 
         // Notificar o BACEN sobre a conclusão da transferência

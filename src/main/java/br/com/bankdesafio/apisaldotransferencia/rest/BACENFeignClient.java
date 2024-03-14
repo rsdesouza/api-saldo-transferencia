@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface BACENFeignClient {
 
     @PostMapping("/transacao/notificar")
-    ResponseEntity<Void> notificarTransacao(@RequestBody NotificacaoBacenDTO notificacaoBacenDTO);
+    void notificarTransacao(@RequestBody NotificacaoBacenDTO notificacaoBacenDTO);
 
 }
