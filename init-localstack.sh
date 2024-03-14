@@ -5,13 +5,6 @@ export AWS_SECRET_ACCESS_KEY=test
 export AWS_DEFAULT_REGION=us-east-1
 export AWS_ENDPOINT_URL=http://localhost:4566
 
-#echo "Aguardando o LocalStack..."
-#while ! awslocal --endpoint-url=http://localhost:4566 s3 ls &> /dev/null; do
-#  echo "Aguardando o LocalStack..."
-#  sleep 1
-#done
-#echo "LocalStack pronto."
-
 aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name reprocessamento-bacen-queue
 
 aws --endpoint-url=http://localhost:4566 lambda create-function --function-name notificar-bacen-lambda  \
