@@ -18,6 +18,10 @@ public class ClienteResponse implements Serializable {
     @JsonProperty("nome")
     private String nome;
 
+    public ClienteResponse() {
+
+    }
+
     public String getIdConta() {
         return idConta;
     }
