@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TransacaoService {
@@ -24,24 +26,33 @@ public class TransacaoService {
     }
 
     public Transacao criarTransacao(TransferenciaDTO transferenciaDTO, String nomeClienteOrigem, String nomeClienteDestino) {
-        // Recuperar as contas correntes envolvidas na transferência
-        Optional<ContaCorrente> contaOrigem = contaCorrenteRepository.findById(transferenciaDTO.getIdContaOrigem());
-        Optional<ContaCorrente> contaDestino = contaCorrenteRepository.findById(transferenciaDTO.getIdContaDestino());
+        // Buscar as contas correntes envolvidas na transferência de forma otimizada
+        List<ContaCorrente> contas = contaCorrenteRepository.findContasByIds(
+                transferenciaDTO.getIdContaOrigem(), transferenciaDTO.getIdContaDestino());
 
-        if (contaOrigem.isEmpty() || contaDestino.isEmpty()) {
+        // Converter a lista para um mapa para facilitar o acesso por ID
+        Map<String, ContaCorrente> contaMap = contas.stream()
+                .collect(Collectors.toMap(ContaCorrente::getId, conta -> conta));
+
+        // Obter as contas a partir do mapa
+        ContaCorrente contaOrigem = contaMap.get(transferenciaDTO.getIdContaOrigem());
+        ContaCorrente contaDestino = contaMap.get(transferenciaDTO.getIdContaDestino());
+
+        // Verificar a existência das contas
+        if (contaOrigem == null || contaDestino == null) {
             throw new IllegalArgumentException("Conta de origem ou destino não encontrada.");
         }
 
-        // Criar a transação
+        // Criar a transação com as contas obtidas
         Transacao transacao = new Transacao();
         transacao.setValor(transferenciaDTO.getValor());
         transacao.setDataHoraTransacao(LocalDateTime.now());
-        transacao.setContaOrigem(contaOrigem.get());
-        transacao.setContaDestino(contaDestino.get());
+        transacao.setContaOrigem(contaOrigem);
+        transacao.setContaDestino(contaDestino);
         transacao.setNomeClienteOrigem(nomeClienteOrigem);
         transacao.setNomeClienteDestino(nomeClienteDestino);
 
-        // Salvar a transação no repositório
+        // Salvar a transação
         return transacaoRepository.save(transacao);
     }
 }

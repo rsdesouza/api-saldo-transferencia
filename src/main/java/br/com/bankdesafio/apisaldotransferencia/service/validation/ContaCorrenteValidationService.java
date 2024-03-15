@@ -1,5 +1,6 @@
 package br.com.bankdesafio.apisaldotransferencia.service.validation;
 
+import br.com.bankdesafio.apisaldotransferencia.exception.ContaInativaException;
 import br.com.bankdesafio.apisaldotransferencia.model.ContaCorrente;
 import br.com.bankdesafio.apisaldotransferencia.repository.ContaCorrenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,8 @@ public class ContaCorrenteValidationService {
     }
 
     public ContaCorrente validarContaAtiva(String id) {
-        return contaCorrenteRepository.findById(id)
-                .filter(ContaCorrente::getAtiva)
-                .orElseThrow(() -> new IllegalArgumentException("Conta corrente não encontrada ou inativa."));
+        return contaCorrenteRepository.findContaAtivaById(id)
+                .orElseThrow(() -> new ContaInativaException("Conta corrente não encontrada ou inativa."));
     }
 
     public ContaCorrente validarExistenciaConta(String id) {

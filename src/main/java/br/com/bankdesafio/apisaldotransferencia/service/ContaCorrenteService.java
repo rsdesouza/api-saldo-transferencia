@@ -4,6 +4,7 @@ import br.com.bankdesafio.apisaldotransferencia.dto.SaldoDTO;
 import br.com.bankdesafio.apisaldotransferencia.dto.TransferenciaDTO;
 import br.com.bankdesafio.apisaldotransferencia.exception.ContaNotFoundException;
 import br.com.bankdesafio.apisaldotransferencia.exception.LimiteDiarioExcedidoException;
+import br.com.bankdesafio.apisaldotransferencia.exception.SaldoInsuficienteException;
 import br.com.bankdesafio.apisaldotransferencia.model.ContaCorrente;
 import br.com.bankdesafio.apisaldotransferencia.repository.ContaCorrenteRepository;
 import br.com.bankdesafio.apisaldotransferencia.service.validation.ContaCorrenteValidationService;
@@ -44,44 +45,12 @@ public class ContaCorrenteService {
     }
 
     @Transactional
-    public ContaCorrente atualizarSaldo(TransferenciaDTO transferenciaDTO) {
-
-        ContaCorrente contaOrigem = contaCorrenteRepository.findById(transferenciaDTO.getIdContaOrigem())
-                .orElseThrow(() -> new ContaNotFoundException("Conta corrente de origem não encontrada."));
-
-        ContaCorrente contaDestino = contaCorrenteRepository.findById(transferenciaDTO.getIdContaDestino())
-                .orElseThrow(() -> new ContaNotFoundException("Conta corrente de destino não encontrada."));
-
-        // Atualizar o saldo da conta de origem
-        BigDecimal novoSaldoOrigem = contaOrigem.getSaldo().subtract(transferenciaDTO.getValor());
-        contaOrigem.setSaldo(novoSaldoOrigem);
-
-        // Atualizar o saldo da conta de destino
-        BigDecimal novoSaldoDestino = contaDestino.getSaldo().add(transferenciaDTO.getValor());
-        contaDestino.setSaldo(novoSaldoDestino);
-
-        // Persistir as alterações no banco de dados
-        contaCorrenteRepository.save(contaOrigem);
-        contaCorrenteRepository.save(contaDestino);
-
-        return contaOrigem;
-    }
-
-
-    @Transactional
-    public void atualizarTotalTransferidoHoje(ContaCorrente contaOrigem, BigDecimal valorTransferencia) {
-        BigDecimal totalTransferidoHojeAtualizado = contaOrigem.getTotalTransferidoHoje().add(valorTransferencia);
-
-        // Verificar se o total transferido hoje excede o limite diário
-        if (totalTransferidoHojeAtualizado.compareTo(contaOrigem.getLimiteDiario()) > 0) {
-            throw new LimiteDiarioExcedidoException("A transferência excede o limite diário permitido para a conta de origem.");
+    public void atualizarSaldo(TransferenciaDTO transferenciaDTO) {
+        int rowsUpdatedOrigem = contaCorrenteRepository.atualizarSaldoContaOrigemComLimiteDiario(transferenciaDTO.getIdContaOrigem(), transferenciaDTO.getValor());
+        if (rowsUpdatedOrigem == 0) {
+            throw new SaldoInsuficienteException("Saldo insuficiente ou conta não encontrada.");
         }
-
-        // Atualizar o total transferido hoje na conta de origem
-        contaOrigem.setTotalTransferidoHoje(totalTransferidoHojeAtualizado);
-
-        // Salvar a conta com o total transferido hoje atualizado
-        contaCorrenteRepository.save(contaOrigem);
+        contaCorrenteRepository.atualizarSaldoContaDestino(transferenciaDTO.getIdContaDestino(), transferenciaDTO.getValor());
     }
 
 }

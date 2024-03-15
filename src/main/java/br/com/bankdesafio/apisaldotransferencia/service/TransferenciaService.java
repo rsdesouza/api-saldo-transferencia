@@ -35,10 +35,7 @@ public class TransferenciaService {
         transferenciaValidationService.validarTransferencia(transferenciaDTO);
 
         // Atualizar saldos das contas correntes envolvidas
-        ContaCorrente contaCorrente = contaCorrenteService.atualizarSaldo(transferenciaDTO);
-
-        //Atualizar total transferido hoje
-        contaCorrenteService.atualizarTotalTransferidoHoje(contaCorrente, transferenciaDTO.getValor());
+        contaCorrenteService.atualizarSaldo(transferenciaDTO);
 
         // Obter informações dos clientes envolvidos
         var clienteOrigem = clienteService.getClienteById(transferenciaDTO.getIdContaOrigem());

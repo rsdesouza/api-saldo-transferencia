@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,17 +32,17 @@ public class TransferenciaValidationService {
     }
 
     private void validarContasAtivas(String idContaOrigem, String idContaDestino) {
-        ContaCorrente contaOrigem = contaCorrenteRepository.findById(idContaOrigem)
-                .orElseThrow(() -> new ContaNotFoundException("Conta de origem não encontrada."));
-        if (!contaOrigem.getAtiva()){
-            throw new ContaInativaException("Conta de origem inativa.");
+        List<ContaCorrente> contas = contaCorrenteRepository.findContasByIds(idContaOrigem, idContaDestino);
+
+        if (contas.size() < 2) {
+            throw new ContaNotFoundException("Uma ou ambas as contas não foram encontradas.");
         }
 
-        ContaCorrente contaDestino = contaCorrenteRepository.findById(idContaDestino)
-                .orElseThrow(() -> new ContaNotFoundException("Conta de destino não encontrada."));
-        if (!contaDestino.getAtiva()){
-            throw new ContaInativaException("Conta de destino inativa.");
-        }
+        contas.forEach(conta -> {
+            if (!conta.getAtiva()) {
+                throw new ContaInativaException("Conta " + conta.getId() + " inativa.");
+            }
+        });
     }
 
     private void validarSaldoContaOrigem(String idContaOrigem, BigDecimal valorTransferencia) {
