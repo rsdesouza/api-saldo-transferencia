@@ -37,12 +37,6 @@ public class DataSourceConfig {
         dataSource.setTestOnBorrow(true);
         dataSource.setMinEvictableIdleTimeMillis(30000);
         dataSource.setTimeBetweenEvictionRunsMillis(15000);
-        dataSource.setTestWhileIdle(true);
-        dataSource.setTestOnReturn(false);
-        dataSource.setJdbcInterceptors(
-                "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"+
-                        "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer"
-        ); // Interceptors para otimizar o pool
 
         return dataSource;
     }
