@@ -21,6 +21,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import org.junit.jupiter.api.DisplayName;
+
 @ContextConfiguration(classes = {ContaCorrenteController.class})
 @ExtendWith(SpringExtension.class)
 @DisabledInAotMode
@@ -33,11 +35,12 @@ class ContaCorrenteControllerTest {
     private ContaCorrenteService contaCorrenteService;
 
     @Test
+    @DisplayName("Consultar saldo retorna saldo correto")
     void testConsultarSaldo() throws Exception {
         // Arrange
         SaldoDTO saldoDTO = new SaldoDTO();
-        saldoDTO.setIdConta("Id Conta");
-        saldoDTO.setSaldo(new BigDecimal("2.3"));
+        saldoDTO.setIdConta("a07da740-429f-431e-9474-8a070ed54ceb");
+        saldoDTO.setSaldo(new BigDecimal("42.3"));
         when(contaCorrenteService.consultarSaldo(Mockito.<String>any())).thenReturn(saldoDTO);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/contas/{id}/saldo", "42");
 
@@ -47,10 +50,11 @@ class ContaCorrenteControllerTest {
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content().string("{\"id_conta\":\"Id Conta\",\"saldo\":2.3}"));
+                .andExpect(MockMvcResultMatchers.content().string("{\"id_conta\":\"a07da740-429f-431e-9474-8a070ed54ceb\",\"saldo\":42.3}"));
     }
 
     @Test
+    @DisplayName("Desativar conta com sucesso")
     void testDesativarConta() throws Exception {
         // Arrange
         doNothing().when(contaCorrenteService).desativarConta(Mockito.<String>any());
@@ -64,6 +68,7 @@ class ContaCorrenteControllerTest {
     }
 
     @Test
+    @DisplayName("Desativar conta com tipo de conteúdo específico")
     void testDesativarConta2() throws Exception {
         // Arrange
         doNothing().when(contaCorrenteService).desativarConta(Mockito.<String>any());

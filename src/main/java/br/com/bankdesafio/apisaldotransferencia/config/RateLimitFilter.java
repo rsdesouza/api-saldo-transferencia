@@ -12,14 +12,14 @@ import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.time.Duration;
 
-@WebFilter(urlPatterns = "api/bacen/transacao/notificar") // Ajuste o padrão de URL conforme necessário
+@WebFilter(urlPatterns = "api/bacen/transacao/notificar")
 public class RateLimitFilter implements Filter {
 
     private final Bucket bucket;
 
     public RateLimitFilter() {
-        // Por exemplo, permitir 10 requisições por minuto.
-        Bandwidth limit = Bandwidth.classic(10, Refill.greedy(10, Duration.ofMinutes(1)));
+        // Por exemplo, permitir 360000 requisições por minuto.
+        Bandwidth limit = Bandwidth.classic(300000, Refill.greedy(300000, Duration.ofMinutes(1)));
         this.bucket = Bucket4j.builder().addLimit(limit).build();
     }
 

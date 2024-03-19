@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -26,6 +27,7 @@ class SqsMessageSenderTest {
     private SqsMessageSender sqsMessageSender;
 
     @Test
+    @DisplayName("Envia uma mensagem para a fila com sucesso")
     void testSendMessage() {
         // Arrange
         when(amazonSQS.sendMessage(Mockito.<SendMessageRequest>any())).thenReturn(new SendMessageResult());

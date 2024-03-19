@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -33,6 +34,7 @@ class TransferenciaControllerTest {
     private TransferenciaService transferenciaService;
 
     @Test
+    @DisplayName("Realiza transferencia entre contas com sucesso")
     void testRealizarTransferencia() throws Exception {
         // Arrange
         doNothing().when(transferenciaService).realizarTransferencia(Mockito.<TransferenciaDTO>any());

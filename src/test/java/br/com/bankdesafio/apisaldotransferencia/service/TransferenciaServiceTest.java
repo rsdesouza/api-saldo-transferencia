@@ -16,6 +16,7 @@ import br.com.bankdesafio.apisaldotransferencia.service.validation.Transferencia
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -48,6 +49,7 @@ class TransferenciaServiceTest {
     private TransferenciaValidationService transferenciaValidationService;
 
     @Test
+    @DisplayName("Realiza a tranferencia entre com contas")
     void testRealizarTransferencia() {
         // Arrange
         doNothing().when(contaCorrenteService).atualizarSaldo(Mockito.<TransferenciaDTO>any());
