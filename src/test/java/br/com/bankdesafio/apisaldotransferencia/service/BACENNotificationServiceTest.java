@@ -10,6 +10,7 @@ import br.com.bankdesafio.apisaldotransferencia.rest.BACENFeignClient;
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -33,6 +34,7 @@ class BACENNotificationServiceTest {
     private SqsMessageSender sqsMessageSender;
 
     @Test
+    @DisplayName("Notifica api do BACEN com sucesso")
     void testNotificarBACEN() {
         // Arrange
         doNothing().when(bACENFeignClient).notificarTransacao(Mockito.<NotificacaoBacenDTO>any());

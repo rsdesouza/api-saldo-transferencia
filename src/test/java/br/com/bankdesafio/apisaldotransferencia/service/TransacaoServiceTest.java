@@ -13,6 +13,7 @@ import br.com.bankdesafio.apisaldotransferencia.repository.TransacaoRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -36,6 +37,7 @@ class TransacaoServiceTest {
     private TransacaoService transacaoService;
 
     @Test
+    @DisplayName("Lança exceção quando as contas não são encontradas")
     void testCriarTransacao() {
         // Arrange
         when(contaCorrenteRepository.findContasByIds(Mockito.<String>any(), Mockito.<String>any()))
@@ -53,6 +55,7 @@ class TransacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Lança exceção quando somente uma conta é encontrada")
     void testCriarTransacao2() {
         // Arrange
         ContaCorrente contaCorrente = new ContaCorrente();
@@ -79,6 +82,7 @@ class TransacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Lança exceção quando uma conta ativa e outra inativa são encontradas")
     void testCriarTransacao3() {
         // Arrange
         ContaCorrente contaCorrente = new ContaCorrente();
@@ -113,6 +117,7 @@ class TransacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Lança exceção quando a busca por contas falha")
     void testCriarTransacao4() {
         // Arrange
         when(contaCorrenteRepository.findContasByIds(Mockito.<String>any(), Mockito.<String>any()))
@@ -130,6 +135,7 @@ class TransacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Lança exceção quando apenas uma conta válida é passada")
     void testCriarTransacao5() {
         // Arrange
         ContaCorrente contaCorrente = new ContaCorrente();

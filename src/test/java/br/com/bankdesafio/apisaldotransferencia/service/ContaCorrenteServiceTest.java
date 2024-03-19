@@ -15,6 +15,7 @@ import br.com.bankdesafio.apisaldotransferencia.service.validation.ContaCorrente
 
 import java.math.BigDecimal;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -38,6 +39,7 @@ class ContaCorrenteServiceTest {
     private ContaCorrenteValidationService contaCorrenteValidationService;
 
     @Test
+    @DisplayName("Consultar saldo retorna saldo esperado")
     void testConsultarSaldo() {
         // Arrange
         ContaCorrente contaCorrente = new ContaCorrente();
@@ -59,6 +61,7 @@ class ContaCorrenteServiceTest {
     }
 
     @Test
+    @DisplayName("Lançar exceção ao consultar saldo com saldo insuficiente")
     void testConsultarSaldo2() {
         // Arrange
         when(contaCorrenteValidationService.validarContaAtiva(Mockito.<String>any()))
@@ -70,6 +73,7 @@ class ContaCorrenteServiceTest {
     }
 
     @Test
+    @DisplayName("Desativar conta com sucesso")
     void testDesativarConta() {
         // Arrange
         ContaCorrente contaCorrente = new ContaCorrente();
@@ -97,6 +101,7 @@ class ContaCorrenteServiceTest {
     }
 
     @Test
+    @DisplayName("Lançar exceção ao desativar conta com erro")
     void testDesativarConta2() {
         // Arrange
         when(contaCorrenteRepository.save(Mockito.<ContaCorrente>any()))
@@ -117,6 +122,7 @@ class ContaCorrenteServiceTest {
     }
 
     @Test
+    @DisplayName("Atualizar saldo realiza a transferência com sucesso")
     void testAtualizarSaldo() {
         // Arrange
         when(contaCorrenteRepository.atualizarSaldoContaDestino(Mockito.<String>any(), Mockito.<BigDecimal>any()))
@@ -143,6 +149,7 @@ class ContaCorrenteServiceTest {
     }
 
     @Test
+    @DisplayName("Lançar exceção ao atualizar saldo da conta destino com erro")
     void testAtualizarSaldo2() {
         // Arrange
         when(contaCorrenteRepository.atualizarSaldoContaDestino(Mockito.<String>any(), Mockito.<BigDecimal>any()))
@@ -163,6 +170,7 @@ class ContaCorrenteServiceTest {
     }
 
     @Test
+    @DisplayName("Lançar exceção ao atualizar saldo da conta origem com limite diário excedido")
     void testAtualizarSaldo3() {
         // Arrange
         when(contaCorrenteRepository.atualizarSaldoContaOrigemComLimiteDiario(Mockito.<String>any(),
