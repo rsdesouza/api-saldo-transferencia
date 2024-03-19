@@ -69,16 +69,14 @@
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree/>
-        <ThroughputController guiclass="ThroughputControllerGui" testclass="ThroughputController" testname="Throughput Controller">
-          <intProp name="ThroughputController.style">0</intProp>
-          <boolProp name="ThroughputController.perThread">false</boolProp>
-          <stringProp name="ThroughputController.maxThroughput">360</stringProp>
-          <FloatProperty>
-            <name>ThroughputController.percentThroughput</name>
-            <value>1.0</value>
+        <ConstantThroughputTimer guiclass="TestBeanGUI" testclass="ConstantThroughputTimer" testname="Constant Throughput Timer">
+          <intProp name="calcMode">1</intProp>
+          <doubleProp>
+            <name>throughput</name>
+            <value>360.0</value>
             <savedValue>0.0</savedValue>
-          </FloatProperty>
-        </ThroughputController>
+          </doubleProp>
+        </ConstantThroughputTimer>
         <hashTree/>
       </hashTree>
       <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree">

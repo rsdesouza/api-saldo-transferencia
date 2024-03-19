@@ -18,8 +18,8 @@ public class RateLimitFilter implements Filter {
     private final Bucket bucket;
 
     public RateLimitFilter() {
-        // Por exemplo, permitir 360000 requisições por minuto.
-        Bandwidth limit = Bandwidth.classic(300000, Refill.greedy(300000, Duration.ofMinutes(1)));
+        // Por exemplo, permitir 180000 requisições por minuto.
+        Bandwidth limit = Bandwidth.classic(180000, Refill.greedy(180000, Duration.ofMinutes(1)));
         this.bucket = Bucket4j.builder().addLimit(limit).build();
     }
 
